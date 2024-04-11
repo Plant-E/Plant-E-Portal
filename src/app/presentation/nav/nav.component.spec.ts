@@ -6,12 +6,19 @@ describe('NavComponent', () => {
   let component: NavComponent;
   let fixture: ComponentFixture<NavComponent>;
 
+  Object.defineProperty(window, 'electronAPI', {
+    value: {
+      sendDataToAngular: jest.fn(),
+      receiveDataFromElectron: jest.fn(),
+    },
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NavComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(NavComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
