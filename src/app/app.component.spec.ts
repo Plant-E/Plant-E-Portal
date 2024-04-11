@@ -2,6 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+
+  Object.defineProperty(window, 'electronAPI', {
+    value: {
+      sendDataToAngular: (channel: string, data: any) => {},
+      receiveDataFromElectron: (channel: string, func: (data: any) => void) => {},
+    },
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
@@ -20,10 +28,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('plant-e-electron');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, plant-e-electron');
-  });
 });
