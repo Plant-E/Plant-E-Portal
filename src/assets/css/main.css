@@ -1,0 +1,49 @@
+html, body{
+  min-height: 100vh;
+  background-color: #292C35!important;
+  color: #b9b9b9 !important;
+}
+
+.flex-between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.dot-glow{
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  border-radius: 50rem;
+  transition: .3s;
+}
+.dot-glow-sm{
+  width: 7.5px;
+  height: 7.5px;
+  min-width: 7.5px;
+}
+.dot-glow-success{
+  box-shadow: 0 0 0 0.25rem #19d89533;
+  background-color: #19d895;
+}
+.dot-glow-danger{
+  box-shadow: 0 0 0 .25rem #ff625833;
+  background-color: #ff6258;
+}
+.dot-glow-secondary{
+  box-shadow: 0 0 0 .25rem #c0c2c333;
+  background-color: #c0c2c3;
+}
+.dot-glow-primary{
+  box-shadow: 0 0 0 .25rem #2196f333;
+  background-color: #2196f3;
+}
+.dot-glow-warning{
+  box-shadow: 0 0 0 .25rem #ffaf0033;
+  background-color: #ffaf00;
+}
