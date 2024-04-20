@@ -3,10 +3,11 @@ import {RouterOutlet} from "@angular/router";
 import {CommonModule} from "@angular/common";
 
 
-import {DisplayLinkConnectionService} from "../../application/displayLinkConnection/display-link-connection.service";
+import {DisplayLinkConnectionService} from "../../application/services/displayLinkConnection/display-link-connection.service";
 import {
   DisplayLinkCommunicationService
-} from "../../application/displayLinkCommunication/display-link-communication.service";
+} from "../../application/services/displayLinkCommunication/display-link-communication.service";
+import {UtilityService} from "../../application/services/utility/utility.service";
 
 @Component({
   selector: 'app-nav',
@@ -21,16 +22,10 @@ import {
 export class NavComponent implements OnInit{
 
   constructor(
-    public displayLinkConnection: DisplayLinkConnectionService,
-    private displayLinkCommunication: DisplayLinkCommunicationService,
+    public DLConnection: DisplayLinkConnectionService,
+    public utility: UtilityService,
   ) {}
 
   ngOnInit(){}
-
-  async send(){
-    console.log({command: 'VISUALIZE', image: 'test'})
-    const response = await this.displayLinkCommunication.send({command: 'VISUALIZE', image: 'test'});
-    console.log(response);
-  }
 
 }

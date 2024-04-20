@@ -1,7 +1,6 @@
 const { usb } = require('usb');
 const {SerialPort} = require("serialport");
 const {ReadlineParser} = require("@serialport/parser-readline");
-const {timestamp} = require("rxjs");
 const {ipcMain} = require("electron");
 
 class DisplayLinkController{
@@ -13,8 +12,8 @@ class DisplayLinkController{
     this.serialport = null
     this.parser = null;
 
-    usb.on('attach', this.pingPorts);
-    usb.on('detach', this.pingPorts);
+    usb.on('attach', this.pingPorts.bind(this));
+    usb.on('detach', this.pingPorts.bind(this));
 
     ipcMain.handle('send-data-to-dlc', async (event, data) => {
       return await this.sendData(data);
@@ -23,11 +22,22 @@ class DisplayLinkController{
     this.pingPorts();
   }
 
+  selectPort(port){
+    this.window.webContents.send('display-controller-connected', port);
+
+    this.serialport = new SerialPort({ baudRate: 115200, path: port.path });
+    this.parser = new ReadlineParser();
+    this.serialport.pipe(this.parser);
+  }
   async pingPorts(){
+    console.log('ping');
+    this.window.webContents.send('display-controller-disconnected');
+
     const ports = await SerialPort.list()
     for(const port of ports){
-      const serialport = new SerialPort({ baudRate: 115200, path: port.path });
-      const parser = new ReadlineParser();
+      const serialport = await new SerialPort({ baudRate: 115200, path: port.path });
+      const parser = await new ReadlineParser();
+
       parser.on('data', async data => {
         data = data.trim();
         if (data !== 'OK') {
@@ -42,21 +52,20 @@ class DisplayLinkController{
       serialport.write(JSON.stringify({ command: 'INIT' }));
     }
   }
-  selectPort(port){
-    this.window.webContents.send('display-controller-connected', port);
-
-    this.serialport = new SerialPort({ baudRate: 115200, path: port.path });
-    this.parser = new ReadlineParser();
-    this.serialport.pipe(this.parser);
-  }
 
   sendData(data){
     if(!this.serialport){ return }
 
+    console.log('send')
+    console.log(data)
+    console.log('-----');
     return new Promise(resolve => {
       this.serialport.write(JSON.stringify(data));
-      this.parser.on('data', data => {
-        resolve(data);
+      this.parser.on('data', response => {
+        console.log('receive')
+        console.log(response)
+        console.log('-----');
+        resolve(response);
       });
     })
 

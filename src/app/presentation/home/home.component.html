@@ -1,7 +1,16 @@
-<div class="d-flex" >
+<section>
 
-  <div class="border rounded-3 overflow-hidden" >
-    <img src="assets/img/apps/pong.png" alt="Plong">
+
+  <div class="d-flex" >
+
+    <div class="m-2 {{!DLConnection.linked ? 'opacity-50' : 'cursor-pointer'}}" *ngFor="let app of library.getApps()" (click)="openApp(app.key)" >
+      <div class="border rounded-3 overflow-hidden" >
+        <img [src]="app.img" alt="{{app.name}}">
+      </div>
+      <span>{{app.name}}</span>
+    </div>
+
   </div>
 
-</div>
+
+</section>
