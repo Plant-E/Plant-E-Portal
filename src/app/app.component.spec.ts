@@ -5,7 +5,7 @@ describe('AppComponent', () => {
 
   Object.defineProperty(window, 'electronAPI', {
     value: {
-      sendDataToAngular: (channel: string, data: any) => {},
+      sendDataToElectron: (channel: string, data: any): any => {},
       receiveDataFromElectron: (channel: string, func: (data: any) => void) => {},
     },
   });
