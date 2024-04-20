@@ -6,6 +6,7 @@ import { Injectable, NgZone } from '@angular/core';
 export class DisplayLinkConnectionService {
 
   public linked =  false;
+  public device = null;
 
   constructor(
     private zone: NgZone,
@@ -17,13 +18,14 @@ export class DisplayLinkConnectionService {
     window.electronAPI.receiveDataFromElectron('display-controller-connected', (device: any) => {
       this.zone.run(() => {
         this.linked = true;
+        this.device = device;
       })
     })
     window.electronAPI.receiveDataFromElectron('display-controller-disconnected', () => {
       this.zone.run(() => {
         this.linked = false;
+        this.device = null;
       })
     })
   }
-
 }
