@@ -4,14 +4,13 @@ const DisplayLinkController = require('./electron/Application/DisplayLinkControl
 const node_path = require('node:path')
 
 let window;
-let DLC;
 
 app.on('ready', createWindow);
 
 
 function createWindow(){
   window = new BrowserWindow({
-    width: 1400,
+    width: 1200,
     height: 900,
     backgroundColor: '#292C35',
     webPreferences: {
@@ -25,9 +24,11 @@ function createWindow(){
   window.webContents.openDevTools();
   window.setMenu(null);
 
-  DLC = new DisplayLinkController({
-    window: window,
-  })
+  window.webContents.on('did-finish-load', () => {
+    new DisplayLinkController({
+      window: window,
+    });
+  });
 }
 
 

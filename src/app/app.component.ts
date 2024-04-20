@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {NavComponent} from "./presentation/nav/nav.component";
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavComponent, CommonModule],
+  imports: [RouterOutlet, NavComponent, CommonModule, NgForOf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
