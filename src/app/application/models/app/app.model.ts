@@ -1,7 +1,7 @@
 import html2canvas from "html2canvas";
 import { DisplayLinkCommunicationService } from "../../services/displayLinkCommunication/display-link-communication.service";
 
-export class App {
+export class App  {
 
   public key: string;
   public name: string;
@@ -12,7 +12,7 @@ export class App {
 
   //App Logic
   public on: boolean = false;
-  public interval: number = 0;
+  private interval: number = 0;
 
   constructor(app: any) {
     this.key = app.key;
@@ -21,9 +21,8 @@ export class App {
   }
 
   public starGame(){
-    // this.on = true;
-    // this.interval = setInterval(this.runInterval.bind(this), 1000);
-    this.runInterval();
+    this.on = true;
+    this.interval = setInterval(this.runInterval.bind(this), 750);
   }
   public stopGame(){
     this.on = false;
@@ -33,6 +32,23 @@ export class App {
   }
 
   private async runInterval(){
+    await this.sendVisualData();
+  }
+
+  //Visual data
+  private async sendVisualData(){
+    const pixels = await this.getVisualData();
+    if(!pixels){ return; }
+
+    console.clear();
+    console.log('SEND');
+    const response = await this.DLCommunication.send({
+      command: 'VISUALIZE',
+      image: pixels,
+    })
+    console.log(response);
+  }
+  private async getVisualData(){
     const element = document.querySelector('.app-container') as HTMLElement;
     const canvas = await html2canvas(element)
 
@@ -42,19 +58,11 @@ export class App {
     new_canvas.width = 8;
     new_canvas.height = 8;
 
-    if(!context){ return; }
+    if(!context){ return null; }
 
     context.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 8, 8);
-
-    const base64 = new_canvas.toDataURL('image/png');
-    console.log(base64);
-
-    const response = await this.DLCommunication.send({
-      command: 'VISUALIZE',
-      image: base64,
-    })
-    console.log(response);
+    const image_data = context.getImageData(0, 0, new_canvas.width, new_canvas.height);
+    return image_data.data;
   }
-
 
 }

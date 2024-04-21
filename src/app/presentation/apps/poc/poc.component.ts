@@ -18,14 +18,27 @@ import {
 export class PocComponent {
 
   public app: App  = this.library.getApp('poc');
+  public offset ={
+    top: 43.75,
+    left: 43.75,
+  }
 
   constructor(
     private library: AppsLibraryService,
     private com: DisplayLinkCommunicationService,
-  ) {}
+  ) {
+    this.init();
+  }
 
-  test(){
-    this.com.send({command: 'INIT'})
+  init(){
+    setInterval(this.runInterval.bind(this), 750);
+  }
+
+  runInterval(){
+    if(!this.app.on){ return; }
+
+    this.offset.top = Math.random() * 87.5;
+    this.offset.left = Math.random() * 87.5;
   }
 
 }

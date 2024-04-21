@@ -1,11 +1,9 @@
 <div class="app-container shadow">
 
-  <div   style="width: 12.5%; height: 12.5%; background-color: white;" ></div>
+  <div style="width: 12.5%; height: 12.5%; background-color: white; transition: linear 0.15s; top: {{offset.top}}%; left: {{offset.left}}%;" class="rounded position-absolute" ></div>
 
 
 </div>
-
-<a class="btn btn-primary" (click)="test()" >TEST</a>
 
 <div class="text-center my-2">
   <a class="btn btn-success" *ngIf="!app.on" (click)="app.starGame()">START</a>
