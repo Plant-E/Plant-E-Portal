@@ -54,7 +54,9 @@ class DisplayLinkController{
   }
 
   sendData(data){
-    if(!this.serialport){ return }
+    if(!this.serialport || !this.parser){ return }
+
+    this.parser.removeAllListeners();
 
     return new Promise(resolve => {
       this.serialport.write(JSON.stringify(data));

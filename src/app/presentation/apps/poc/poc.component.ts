@@ -31,7 +31,7 @@ export class PocComponent {
   }
 
   init(){
-    setInterval(this.runInterval.bind(this), 750);
+    this.app.logic = this.runInterval.bind(this);
   }
 
   runInterval(){

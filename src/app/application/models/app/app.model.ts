@@ -14,6 +14,8 @@ export class App  {
   public on: boolean = false;
   private interval: number = 0;
 
+  public logic = () => {}
+
   constructor(app: any) {
     this.key = app.key;
     this.name = app.name;
@@ -22,17 +24,23 @@ export class App  {
 
   public starGame(){
     this.on = true;
-    this.interval = setInterval(this.runInterval.bind(this), 750);
+    this.runInterval();
+    // this.interval = setInterval(this.runInterval.bind(this), 750);
   }
   public stopGame(){
     this.on = false;
 
-    clearInterval(this.interval);
-    this.interval = 0;
+    // clearInterval(this.interval);
+    // this.interval = 0;
   }
 
   private async runInterval(){
-    await this.sendVisualData();
+    if(!this.on){ return; }
+
+    // logic_response = await this.logic();
+    const response = await this.sendVisualData();
+    const logic_respons = await this.logic();
+    setTimeout(this.runInterval.bind(this), 150);
   }
 
   //Visual data
@@ -40,13 +48,10 @@ export class App  {
     const pixels = await this.getVisualData();
     if(!pixels){ return; }
 
-    console.clear();
-    console.log('SEND');
-    const response = await this.DLCommunication.send({
+    return await this.DLCommunication.send({
       command: 'VISUALIZE',
       image: pixels,
     })
-    console.log(response);
   }
   private async getVisualData(){
     const element = document.querySelector('.app-container') as HTMLElement;
