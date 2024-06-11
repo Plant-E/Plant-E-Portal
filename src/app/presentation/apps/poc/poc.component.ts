@@ -5,6 +5,8 @@ import {NgIf} from "@angular/common";
 import {
   DisplayLinkCommunicationService
 } from "../../../application/services/displayLinkCommunication/display-link-communication.service";
+import {Poc} from "../../../application/models/poc/poc.model";
+import {Plong} from "../../../application/models/Plong/plong.model";
 
 @Component({
   selector: 'app-poc',
@@ -17,28 +19,10 @@ import {
 })
 export class PocComponent {
 
-  public app: App  = this.library.getApp('poc');
-  public offset ={
-    top: 43.75,
-    left: 43.75,
-  }
+  public app: any = this.library.getApp('poc');
 
   constructor(
     private library: AppsLibraryService,
-    private com: DisplayLinkCommunicationService,
-  ) {
-    this.init();
-  }
-
-  init(){
-    this.app.logic = this.runInterval.bind(this);
-  }
-
-  runInterval(){
-    if(!this.app.on){ return; }
-
-    this.offset.top = Math.random() * 87.5;
-    this.offset.left = Math.random() * 87.5;
-  }
+  ) {}
 
 }

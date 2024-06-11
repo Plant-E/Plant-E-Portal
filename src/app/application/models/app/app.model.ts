@@ -12,9 +12,7 @@ export class App  {
 
   //App Logic
   public on: boolean = false;
-  private interval: number = 0;
-
-  public logic = () => {}
+  private interval: number = 150;
 
   constructor(app: any) {
     this.key = app.key;
@@ -25,26 +23,23 @@ export class App  {
   public starGame(){
     this.on = true;
     this.runInterval();
-    // this.interval = setInterval(this.runInterval.bind(this), 750);
   }
   public stopGame(){
     this.on = false;
-
-    // clearInterval(this.interval);
-    // this.interval = 0;
   }
 
   private async runInterval(){
     if(!this.on){ return; }
 
-    // logic_response = await this.logic();
-    const response = await this.sendVisualData();
     const logic_respons = await this.logic();
-    setTimeout(this.runInterval.bind(this), 150);
+    const response = await this.sendVisualData();
+
+    setTimeout(this.runInterval.bind(this), this.interval);
   }
+  public async logic(){}
 
   //Visual data
-  private async sendVisualData(){
+  public async sendVisualData(){
     const pixels = await this.getVisualData();
     if(!pixels){ return; }
 
@@ -53,7 +48,7 @@ export class App  {
       image: pixels,
     })
   }
-  private async getVisualData(){
+  public async getVisualData(){
     const element = document.querySelector('.app-container') as HTMLElement;
     const canvas = await html2canvas(element)
 
